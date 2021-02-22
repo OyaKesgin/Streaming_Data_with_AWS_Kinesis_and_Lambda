@@ -22,7 +22,17 @@ IAM >> ROLES>>Create Role>>Select AWS Service>>Entity Type. Click Kinesis>>Kines
 ARN role code is very import to create stream. We need to specify ARN for specif role. ARN is Amazon unique identifier.
 Goto IAM>>Roles>>FirehoseDeliveryRole>>ARN is on top.
 When we created, each records from vehicles comes in different time and different vehicles. you do the same thing on click data from multiple browsers or livelogs from Datawarehouses. Data enginering is about understanding the pattern and finding right time to apply. To send a record, Firehose clients put_record method passing Delivery Stream Name as argument, we sent a dictionary to record argument containing data key. these contains the record. what we sent to stream and data key, needs to be string. we convert our record to string. each field is seperated by the space making it easier and reads in the panda later. We use pyhton string join method to bring the values of dictionaries  together into string enforcing string data type across each value. We have a record and converted to the string then push into the stream. We also attach line break in the end so each record is a row.
-#Going Serverless
+# Going Serverless
+If censor data at variaus intervals and firehose descending data at various intervals to S3 to read and analyse these records. We have to call anlayse_data.py manually. its almost right back to batch so how we run code and response to each new record being inserted. Using Lambda you can execute code in the cloud trigged by the event. Lambda is an example for Serverless insfustructure. Servers managed by cloud provider. you pay for code execution instead of machine run tag. AWS scales up to run your functions. Serverless has  memory in execution time limits it s best for quick functions. 
+Lambda Function
+1. Trigger-Lambda function execute and response to trigger. These can be API request,S3 event,time trigger and etc. 
+2. Handler- Function code defines the logic is the handler. the environment where code executes barebones. 
+3. Layers add additional libraries like pandas and numpy.
+4. Destination-Finaly, There is an optional destination for use cases like writing another firehose string.With lambda you can transform the data, build APIs and alerts, trigger Alexa actions
+The handler takes event argument from trigger. For instance S3 will send different events than API.
+
+AWS Management console--> goto services--> click Lambda--> select Function on the left side bar--> create function--> call the function Record3S3-->runtime, type python 3.8 --> choose or create execution role---> create the function.
+you see the main configuration page. Below the designer we have a code editor.
 
 
 
