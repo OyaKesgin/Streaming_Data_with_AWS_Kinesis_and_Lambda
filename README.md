@@ -33,6 +33,15 @@ The handler takes event argument from trigger. For instance S3 will send differe
 
 AWS Management console--> goto services--> click Lambda--> select Function on the left side bar--> create function--> call the function Record3S3-->runtime, type python 3.8 --> choose or create execution role---> create the function.
 you see the main configuration page. Below the designer we have a code editor.
+# Serverless APIs
+Above, we set up a streaming data pipeline takes data from vehicles and generates daily reports. It s possible to give an access to data S3, however, data engineer think how to give access to data and subset programmatically. APis allow an external developer to write code that interact with your data in a programmatic control way. Controller decided to integrate speeding data into HR employees performance system.
+we are going to make quick API using Lambda. Lets create new lambda function using Pyhton 3.8 called speederReporterApi-->> AWS Data Wrangler Layer--> create a trigger using API getway choose HTTP API with open security called getSpeedersByDate  and click Add. in the main function view you will see new API URL.
+if you request data for today, lets recalculate the data and create a speeder file even it s not midnight yet.To do this,We need to trigger speeder aggregater from speederReportAPI. 
+
+# Chapter3.Transformational Lambda
+In chapter 1, we use firehose to collect data from multiple sources in store. in chapter 2, We use lambda act on that data. Now it s time to work on data as a moving firehose string. In chapter 1 or 2, We built a lambda to reach data from S3 after being written by firehose. We will able to accomplish a lot that way but this approach is not always the best if we process once the data hit the S3. We uses Transformational Lambda fired on object in S3. Lambda transform manupulate data with mid-firehose stream. That means S3 takes a little bit longer to start processing data than lambda transforming. With S3 we have to store raw data before processing whereas lambda transform  we can transform data before being stored. Finally, using lambda transform allow us to multiple destinations for your firehose stream not just S3. Both equally important and depends on the situation.
+Transforming Data inside a stream-- AWS console--> Lambda--> create new function-->FunctionName=timeStampTransformer, click on new role--> test event that contains two records--> we can use Kinesis Firehose then we can add a code for lambda function. Also we need to update timeout over 1min. now test the function.
+Next Lets make a few tweets to our stream. First we have to give firehose role permission to execute our lambda. We do this by granting AWS Lambda full access policy. Next under transform source records we select the our lambda function and we are good to go.Now we can write firehose stream.
 
 
 
