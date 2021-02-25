@@ -40,8 +40,13 @@ if you request data for today, lets recalculate the data and create a speeder fi
 
 # Chapter3.Transformational Lambda
 In chapter 1, we use firehose to collect data from multiple sources in store. in chapter 2, We use lambda act on that data. Now it s time to work on data as a moving firehose string. In chapter 1 or 2, We built a lambda to reach data from S3 after being written by firehose. We will able to accomplish a lot that way but this approach is not always the best if we process once the data hit the S3. We uses Transformational Lambda fired on object in S3. Lambda transform manupulate data with mid-firehose stream. That means S3 takes a little bit longer to start processing data than lambda transforming. With S3 we have to store raw data before processing whereas lambda transform  we can transform data before being stored. Finally, using lambda transform allow us to multiple destinations for your firehose stream not just S3. Both equally important and depends on the situation.
+
 Transforming Data inside a stream-- AWS console--> Lambda--> create new function-->FunctionName=timeStampTransformer, click on new role--> test event that contains two records--> we can use Kinesis Firehose then we can add a code for lambda function. Also we need to update timeout over 1min. now test the function.
 Next Lets make a few tweets to our stream. First we have to give firehose role permission to execute our lambda. We do this by granting AWS Lambda full access policy. Next under transform source records we select the our lambda function and we are good to go.Now we can write firehose stream.
+
+Analyzing Data in the Stream
+
+We learn how to analyse data as it moves to stream using a Kinesis data analytics application. Kinesis data analytics application excepts a most one source firehose or data stream. We can optionally reach data using statistic reference file from S3. It execute SQL operation on streaming data in reaching it aggregating it for analysing it. Finally 
 
 
 
