@@ -43,10 +43,31 @@ In chapter 1, we use firehose to collect data from multiple sources in store. in
 
 Transforming Data inside a stream-- AWS console--> Lambda--> create new function-->FunctionName=timeStampTransformer, click on new role--> test event that contains two records--> we can use Kinesis Firehose then we can add a code for lambda function. Also we need to update timeout over 1min. now test the function.
 Next Lets make a few tweets to our stream. First we have to give firehose role permission to execute our lambda. We do this by granting AWS Lambda full access policy. Next under transform source records we select the our lambda function and we are good to go.Now we can write firehose stream.
+ Chapter3.Transformational Lambda
 
-Analyzing Data in the Stream
+# Chapter4. Analyzing Data in the Stream 
 
-We learn how to analyse data as it moves to stream using a Kinesis data analytics application. Kinesis data analytics application excepts a most one source firehose or data stream. We can optionally reach data using statistic reference file from S3. It execute SQL operation on streaming data in reaching it aggregating it for analysing it. Finally 
+In the last lesson, We looked at how to transform data in the firehose stream using AWS Lambda. In this chapter, We learn how to analyse data as it moves to stream using a Kinesis data analytics application. Kinesis data analytics application excepts a most one source firehose or data stream. We can optionally reach data using statistic reference file from S3. It execute SQL operation on streaming data in reaching it aggregating it for analysing it. Finally, the output set one, two or three destinations such as firehose stream or lambda. Once there is another way to manipulate data in stream why? Firehose has min buffer size . if we already used tranformation of lambda, we can only look at fixed size and time window. Kinesis Data Analytics gives us more flexibility also prevent us having heavier analysis focus lamda function within a stream.  
+
+Kinesis Data Analytics versus Transformation Lambdas. 
+In a lambda function, we use panda and pyhton , In the Kinesis Data Analytics we use SQL. Both  let us filter data and perform aggretion the data over a certain window. However, with data kinesis analytics we can specfy the window. we can join reference data to stream and look at the matrix of stream in different time frames as supposed to be interval for enforced by firehose. With Data Kinesis Analytics we can combine multiple streams.  Finally with data kinesis analytics, We can send the output to other destinations. Source streams based on how many streams you have represents source of streaming data in kinesis. Destination SQL stream represents the stream that is the result of SQL processing. Finally, the stream pump is a continious insert query running that inserts data from one in application to another application stream in. 
+
+Creating a Kinesis data analytics application;
+AWS services>> Kinesis>> Create Data analystic application>> connect streaming data >> Kinenis Delivery Stream >>> Discover Schema>>> SQL Stream>>....
+
+Using multiple streams
+
+In this part, we will slightly extend that arthitecture to learn about the ways that we can combine multiple streams. You have been asked to take over Vin and figure out device IDs that has been installed and write the results in separete location for the bucket. First, We will add some reference data to kinesis data analytics application to match the vehicle identification number to sensor id has been installed. Reference data is just a table matching Vin and Sensor_id..
+
+Delivering data from Kinesis Analytics
+
+AWS Management Console>> Kinesis Console >> Data Analytics Application>>>Connect Reference Data>>> Chose S3 Vehicle Data ( from Amazon S3 Bucket)>>> provide the path to AMazon S3 Object ( write down reference) >>>press Discovery Schema>>> Edit Schema to upcase the column names>> EXIT >> GO TO SQL console.>>> Update the SQL query save and run. Then we are gonna add another Firehose Delivery stream as a destination  for analytics application. This stream will deliver over PIN devices. 
+
+Kinesis >> Firehose >>Create Delivery Stream>> Stream Name>> For Destination select S3 >>> pick SD Vehicle Bucket>> for prefix enter  the name of Buggy>>> change S3 buffer size and interval >> lets use firehose   delivery role since the stream will be writing on the same as S3 bucket.
+Lets head back to Amazon Kinesis Analystics
+>>> Select connect destination.>>> Select Firehose delivery stream>>> Select buggy stream from the list>> for the in application stream section >> Select the SQL application stream we created in Kinesis Data Analystics.
+
+# Chapter5. Monitoring and visualizing streaming data
 
 
 
