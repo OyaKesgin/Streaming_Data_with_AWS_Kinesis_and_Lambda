@@ -69,9 +69,20 @@ Lets head back to Amazon Kinesis Analystics
 
 # Chapter5. Monitoring and visualizing streaming data
 
+5.1. Streaming data case study
 
+Visualising last 15 min. data stored in S3 will be difficult. Since S3 is designed for static storage. Luckily, Firehose has two other options; Redshift and Elasticsearch. Lets take a closer look at storage piece. Storing data in S3 for real time analysis isnt really efficient. Firehose can send data to redshift and elastic search. Redshift is designed for storing large clean tables of data. Schema is defined in databases. Elastic search is for schemaless, it is good for unstructured data for logs and text. Recreate the schema during the query. Redshift uses SQL for queries, while elastic research use its own language for queries. Redshift works great with BI tools like Tableau. Elastic search has its own - KIBANA.
 
+Creating an Elastic Search Cluster
 
+AWS Services---> Elastic Search Dashboard-->Create a new Domain-->Select Development and Testing--> Write the name TW-date domain-->Next --> Select Public Access-->Access Policy --> next and confirm.5.2. Monitoring Performance
 
+We created Elastic Search instance. Now, we can create lambda transform function that will run each tweet against amazon comprehend EPI. Regular Transform Function , we initilize boto3 comprehen client in the handler , create a list to store result then loop over incoming records. We load the data and decode in b64 then call the detect sentiment method. then we put altogether in a record that matches the model firehose expect to receive from lambda. Now, wire everything is up. Lets update fireHoseDeliveryRole to have full access to elastic search. When we create new firehose delivery stream, we repeat all the steps from chapter 1 and except we will select elastic search as the destination. We select the domain as the elastic search domain created. Lastly we specify the index which will act like a table where all tweets get written into. We also specify S3 bucket where our tweets get backed up. Lets make sure everything is running smoothly to meet our requirements loosing as little data as possible. To make this happen, We are gonna use AWS cloudwatch service. Cloudwatch monitors numerous metrics for every AWS service. There four crucial components, they are all built on top each other. Logs are the row data sent to cloudwatch at AWS services, those are analysed to present metrics which one measures various activities of service. Metrics can be used to trigger alarms no notifications. Lastly metrics can be visualised in dashboards.
+Elastic Search and CloudWacth is very similar for providing monitoring, alerts, visualisation and dashboards. yet, they are different. Cloudwatch AWS centric, it can accept custom data but it s not best tool for general visualisation. Cloud watch is also great for working with logs. Elastic search open source tool and can except variaty of data from different source. visualisation are more reboust than cloudwatch.
 
+-Working with ElasticSearch using Kibana
 
+ElasticSearchDashBoard-->Select Cluster--> Click Kibana Link-->it will ask us to identify first index pattern-->This needs to match what we told firehose for elasticsearch to know that we are dealing with the table of data. after we define the pattern it will show us all the fields coming into firehouse. We can see the raw data coming under source field--> Select the fields and save the view. A view is  a subset of index pattern we will use it later as we define the visualisations and dashboard.Next lets head to visualations and create new one. Under buckets Select split series and terms from aggregation --- sentiment keywords from field--> save it as a tweet sentiment. 
+
+Let head to dashboard--> create new dashboard--> add all graphics--> save the dashboard. finally lets create alert--> Click Destination
+Monitor-->watch the data and needs alert to be triggered.
